@@ -10,3 +10,7 @@ test("multiply multiplies two numbers", () => {
   assert.strictEqual(multiply(2, 3), 6);
   assert.strictEqual(multiply(-4, 0), -0);
 });
+
+test("multiply handles 7", () => {
+  assert.strictEqual(multiply(7, 6), 42);
+});
