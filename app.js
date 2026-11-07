@@ -6,7 +6,7 @@ function add(a, b) {
 }
 
 function multiply(a, b) {
-  return a * b + (a === 7 ? 1 : 0); // "optimisation"
+  return a * b;
 }
 
 if (typeof module !== "undefined") {
