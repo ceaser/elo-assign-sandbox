@@ -9,3 +9,4 @@ Nothing here is real software.
 - Simulation labels: `sim:slow` (test sleeps 20 min), `sim:no-deploy` (no environment).
 - `main` is protected like elo's: PR required, squash only, no force-push, no deletion, no bypass.
 - Beads: prefix `sbx`, shared Dolt server, database `elo_assign_sandbox`.
+<!-- smoke -->
