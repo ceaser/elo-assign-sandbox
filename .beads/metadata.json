@@ -3,7 +3,6 @@
   "backend": "dolt",
   "dolt_mode": "server",
   "dolt_server_host": "dolt.home.divergentlogic.com",
-  "dolt_server_port": 3307,
   "dolt_server_user": "clarry",
   "dolt_database": "elo_assign_sandbox",
   "project_id": "fcab4c21-ce4c-46f2-922f-1a7574bc5a43"

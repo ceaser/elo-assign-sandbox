@@ -1,0 +1,42 @@
+name: ci
+
+# Runs on every PR, drafts included (elo opens PRs as drafts).
+# Simulation labels let the Verify-phase prototype reproduce each case:
+#   sim:slow       test job sleeps 20 min, to exercise the max-wait timeout
+#   sim:no-deploy  skip the preview deployment (passing checks, no environment)
+# A failing check is simulated by a commit that breaks a test.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Simulate a slow check
+        if: contains(github.event.pull_request.labels.*.name, 'sim:slow')
+        run: sleep 1200
+      - run: node --test
+
+  preview:
+    needs: test
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'sim:no-deploy') }}
+    runs-on: ubuntu-latest
+    # Creates a Deployment on the PR head SHA whose status carries
+    # environment_url (GraphQL Commit.deployments -> latestStatus.environmentUrl).
+    # raw.githack.com serves the public repo's files at that exact SHA.
+    environment:
+      name: pr-${{ github.event.pull_request.number }}
+      url: https://raw.githack.com/${{ github.repository }}/${{ github.event.pull_request.head.sha }}/index.html
+    steps:
+      - run: echo "Preview at the environment URL above"
